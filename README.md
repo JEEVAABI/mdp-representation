@@ -3,38 +3,45 @@
 ## Register Number : 212221240018 
 
 ## AIM:
-To represent a Markov Decision Process (MDP) problem for medical diagnosis based on patient's temperature and symptoms, with actions including prescription and consulting a doctor.
+The aim of this experiment is to create a Markov Decision Process (MDP) representation and implement it in Python to model the decision-making process in a medical treatment scenario.
 ## PROBLEM STATEMENT:
 
 ### Problem Description
-Consider an AI agent tasked with diagnosing a patient's health condition based on their temperature and reported symptoms. The agent must determine whether the patient is sick or healthy, and if sick, provide appropriate actions such as prescribing medication and recommending a consultation with a doctor.
+The problem involves managing the treatment of patients who can be in one of three states: healthy, mildly sick, or seriously sick. The objective is to determine whether to administer treatment or not for a mildly sick patient, considering the potential outcomes and rewards associated with each action.
 
 ### State Space
-{Low, Normal, High} -> {0, 1, 2}
+State 0: Healthy
+State 1: Mildly Sick
+State 2: Seriously Sick
 
-where,
-Low represents the patient having a low temperature, Normal represents normal temperature, and High represents high temperature.
-0 represents Low, 1 represents Normal, and 2 represents High.
+{Healthy, Mildly Sick, Seriously Sick} -> {0, 1, 2}
+
 
 ### Sample State
-Low -> 0
-(The patient has a low temperature, represented numerically as 0.)
+State: Healthy
+Healthy -> 0
+(The patient is Healthy, represented numerically as 0.)
 ### Action Space
-{Prescribe, Consult} -> {0, 1}
-where,
-Prescribe represents prescribing medication, and Consult represents recommending a consultation with a doctor.
-0 represents Prescribe, and 1 represents Consult.
+Action 0: Treat
+Action 1: Not Treat
+
+{Treat, Not Treat} -> {0, 1}
+
+
 
 ### Sample Action
-Prescribe -> 0
-(The action taken is to prescribe medication, represented numerically as 0.)
+Action: Treat
+Treat -> 0
+(The action taken is to Treat patient, represented numerically as 0.)
 
 ### Reward Function
-R = { +1 , if the diagnosis is correct or closer to the actual condition
-0 , otherwise}
+R = { +1 , if the patient state is changed to healthy state or not, otherwise -1}
 
+Transition to healthy state: +1
+Staying sick: -1
+Terminal states: No reward
 ### Graphical Representation
-![graph](graph.jpg)
+![graph](graph1.jpg)
 
 ## PYTHON REPRESENTATION:
 ```python
@@ -42,30 +49,33 @@ import gym
 import gym_walk
 #P = gym.make('BanditWalk-v0').env.P
 # Creating Dictionary
+# MDP Representation in Python
 P = {
     0: {
-        0: [(0.8, 0, -1, False), (0.1, 1, -1, False), (0.1, 2, -1, False)],
-        1: [(0.2, 1, -1, False), (0.7, 0, -1, False), (0.1, 2, -1, False)]
+        0: [(0.0, 0, 0, True), (0.0, 1, 0, True), (0.0, 2, 0, True)],
+        1: [(0.0, 0, 0, True), (0.0, 1, 0, True), (0.0, 2, 0, True)]
     },
     1: {
-        0: [(0.1, 0, -1, False), (0.8, 1, -1, False), (0.1, 2, -1, False)],
-        1: [(0.1, 0, -1, False), (0.7, 1, -1, False), (0.2, 2, -1, False)]
+        0: [(0.9, 0, 1, False), (0.0, 1, -1, True), (0.1, 2, -1, False)],
+        1: [(0.0, 0, -1, True), (0.0, 1, -1, True), (0.0, 2, -1, True)]
     },
     2: {
-        0: [(0.1, 0, -1, False), (0.1, 1, -1, False), (0.8, 2, -1, False)],
-        1: [(0.1, 1, -1, False), (0.2, 0, -1, False), (0.7, 2, -1, False)]
+        0: [(0.0, 0, -1, True), (0.0, 1, -1, True), (0.0, 2, -1, True)],
+        1: [(0.0, 0, -1, True), (0.0, 1, -1, True), (0.0, 2, -1, True)]
     }
 }
+
+
 
 P
 
 ```
 
 ## OUTPUT:
-![output](out.png)
+![output](newout.png)
 
 ## RESULT:
-The given Markov Decision Process (MDP) problem for medical diagnosis based on patient's temperature and symptoms has been represented in text, graphical, and Python dictionary forms, considering three states for temperature.
+The Markov Decision Process (MDP) has been successfully represented using Python dictionaries. Each state-action pair contains information about possible transitions, transition probabilities, associated rewards, and whether the next state is terminal or not. This representation can be used for further analysis and decision-making algorithms such as reinforcement learning.
 
 
 
